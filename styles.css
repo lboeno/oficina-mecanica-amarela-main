@@ -1,0 +1,592 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Layout principal */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f3f4f6;
+    min-height: 100vh;
+}
+
+/* Sidebar fixo */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 16rem;
+    z-index: 40;
+    transition: transform 0.3s ease-in-out;
+    background-color: #0d2aa8; /* azul forte */
+}
+
+.sidebar-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Novo: topo da sidebar azul e espaçamento melhor na logo */
+.sidebar-header {
+    background-color: #1336c2; /* azul um pouco mais claro */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 80px;
+    padding: 0 1.5rem;
+    gap: 1rem;
+}
+
+/* Conteúdo principal */
+.main-content {
+    min-height: 100vh;
+}
+
+/* Responsividade do layout */
+@media (min-width: 1024px) {
+    .main-content {
+        margin-left: 16rem; /* mesmo width da sidebar */
+    }
+    
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+}
+
+@media (max-width: 1023px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    /* Overlay para fechar o menu mobile */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 35;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Melhorar visibilidade do botão de menu */
+    #menu-toggle {
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.2s ease-in-out;
+    }
+    
+    #menu-toggle:hover {
+        background-color: rgb(243 244 246); /* bg-gray-100 */
+    }
+    
+    /* Ajustar padding do conteúdo principal no mobile */
+    .main-container {
+        padding: 1rem;
+    }
+}
+
+/* Estilos personalizados para o sistema de gestão */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.nav-link.active {
+    background-color: rgb(0, 0, 0) !important; /* bg-yellow-700 */
+}
+
+/* Animações suaves */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilo para modais */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    animation: modalSlideIn 0.3s ease-out;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Estilo para status badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-aberta {
+    background-color: rgb(254 240 138); /* bg-yellow-200 */
+    color: rgb(133 77 14); /* text-yellow-800 */
+}
+
+.status-em_andamento {
+    background-color: rgb(147 197 253); /* bg-blue-200 */
+    color: rgb(30 64 175); /* text-blue-800 */
+}
+
+.status-concluida {
+    background-color: rgb(187 247 208); /* bg-green-200 */
+    color: rgb(22 101 52); /* text-green-800 */
+}
+
+.status-cancelada {
+    background-color: rgb(254 202 202); /* bg-red-200 */
+    color: rgb(153 27 27); /* text-red-800 */
+}
+
+/* Estilos para o estoque */
+.estoque-baixo {
+    color: rgb(220 38 38); /* text-red-600 */
+    font-weight: 600;
+}
+
+.estoque-medio {
+    color: rgb(185, 217, 6); /* text-amber-600 */
+    font-weight: 600;
+}
+
+.estoque-alto {
+    color: rgb(21 128 61); /* text-green-600 */
+    font-weight: 600;
+}
+
+/* Responsividade melhorada */
+@media (min-width: 1024px) {
+    /* Layout para desktop */
+    .desktop-grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+    
+    .dashboard-stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .dashboard-content {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    /* Tabelas em desktop */
+    .table-container {
+        overflow: visible;
+    }
+    
+    .table-responsive {
+        overflow: visible;
+    }
+    
+    /* Cards de dashboard com melhor espaçamento */
+    .dashboard-card {
+        padding: 1.5rem;
+        min-height: 120px;
+    }
+    
+    /* Sidebar com largura fixa */
+    .sidebar-content {
+        width: 100%;
+        height: 100vh;
+        overflow-y: auto;
+    }
+    
+    /* Header com altura fixa */
+    .main-header {
+        height: 80px;
+        position: sticky;
+        top: 0;
+        z-index: 30;
+    }
+    
+    /* Conteúdo principal com padding adequado */
+    .main-container {
+        padding: 2rem;
+        max-width: none;
+    }
+}
+
+@media (max-width: 1023px) {
+    /* Container para scroll horizontal em tabelas */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+    }
+    
+    /* Manter estrutura de tabela normal com largura mínima */
+    .table-responsive table {
+        min-width: 800px; /* Largura mínima para manter todas as colunas visíveis */
+        width: 100%;
+    }
+    
+    /* Manter cabeçalho da tabela visível */
+    .table-responsive thead {
+        position: sticky;
+        top: 0;
+        background-color: #f9fafb;
+        z-index: 10;
+    }
+    
+    /* Estilo das células em mobile */
+    .table-responsive td,
+    .table-responsive th {
+        white-space: nowrap;
+        min-width: 120px; /* Largura mínima para cada coluna */
+    }
+    
+    /* Coluna de ações menor */
+    .table-responsive td:last-child,
+    .table-responsive th:last-child {
+        min-width: 100px;
+    }
+    
+    /* Melhorar a visualização do scroll */
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+    }
+    
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+    
+    .mobile-card {
+        display: block;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+    
+    .mobile-card-title {
+        font-weight: 600;
+        color: rgb(31 41 55); /* text-gray-800 */
+        margin-bottom: 0.5rem;
+    }
+    
+    .mobile-card-content {
+        color: rgb(107 114 128); /* text-gray-500 */
+        font-size: 0.875rem;
+    }
+    
+    /* Dashboard responsivo */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem;
+    }
+    
+    /* Formulários em mobile */
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    /* Botões em mobile */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-group button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Modais em mobile */
+    .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+    
+    /* Filtros e pesquisa em mobile */
+    .filters-container {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    /* Status badges menores */
+    .status-badge {
+        font-size: 0.625rem;
+        padding: 0.125rem 0.5rem;
+    }
+    
+    /* Sidebar em mobile */
+    .sidebar {
+        transform: translateX(-100%);
+        width: 80%;
+        max-width: 300px;
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    
+    /* Overlay para sidebar mobile */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 30;
+        display: none;
+    }
+    
+    .sidebar-overlay.show {
+        display: block;
+    }
+    
+    /* Header mobile */
+    .mobile-header {
+        padding: 1rem;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    /* Conteúdo principal mobile */
+    .main-container {
+        padding: 1rem;
+    }
+}
+
+/* Estilo para loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #44d60a;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estilos para alertas de validação */
+.input-error {
+    border-color: rgb(239 68 68) !important; /* border-red-500 */
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.error-message {
+    color: rgb(239 68 68); /* text-red-500 */
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Transições suaves para hover states */
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+    transform: scale(1.02);
+}
+
+/* Estilo para cards de dashboard */
+.dashboard-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para ordenação de tabelas */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.sortable-header:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sortable-header::after {
+    content: '↕️';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    font-size: 12px;
+}
+
+.sortable-header.sorted-asc::after {
+    content: '↑';
+    opacity: 1;
+    color: #310696;
+}
+
+.sortable-header.sorted-desc::after {
+    content: '↓';
+    opacity: 1;
+    color: #2207b8;
+}
+
+.sortable-header.sorted-asc,
+.sortable-header.sorted-desc {
+    background-color: rgba(217, 119, 6, 0.1);
+}
+
+/* Estilos gerais para tabelas responsivas */
+.table-responsive {
+    position: relative;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Indicador visual de scroll horizontal */
+.table-responsive::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+    .table-responsive::after {
+        opacity: 1;
+    }
+    
+    /* Melhorar padding em células para mobile */
+    .table-responsive td {
+        padding: 12px 16px;
+    }
+    
+    /* Destaque para botões de ação em mobile */
+    .table-responsive td button {
+        margin: 0 4px;
+        padding: 8px;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+    }
+    
+    .table-responsive td button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Indicador visual de que a tabela pode ser deslizada */
+    .table-responsive.scrollable::before {
+        content: '← Deslize para ver mais →';
+        position: absolute;
+        bottom: -25px;
+        right: 0;
+        left: 0;
+        text-align: center;
+        font-size: 12px;
+        color: #6b7280;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .table-responsive.scrolling::before {
+        opacity: 0;
+    }
+}
